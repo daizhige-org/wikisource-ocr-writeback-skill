@@ -18,7 +18,17 @@
 
 ## 安装
 
-**Claude Code** —— 放进 skills 目录即可，重启后自动发现：
+**使用 `npx skills`（推荐）**：
+
+```bash
+# 全局安装（所有项目及支持的 agent 可用）
+npx skills add daizhige-org/wikisource-ocr-writeback-skill -g
+
+# 或安装到当前项目
+npx skills add daizhige-org/wikisource-ocr-writeback-skill
+```
+
+**手动安装（Claude Code）** —— 放进 skills 目录即可，重启后自动发现：
 
 ```bash
 # 只给自己用
