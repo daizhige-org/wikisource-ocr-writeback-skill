@@ -1,6 +1,6 @@
 ---
 name: wikisource-ocr-writeback
-description: 给 Wikisource 上一部已有扫描件的书逐页做 OCR 并写回。用 ocr.wmcloud.org（Wikimedia 官方 OCR，可选 Google／Tesseract／Transkribus 引擎）识别 Commons 上的 PDF/DjVu，结果存盘，再用 pywikibot 以用户帐号写进 Page: 名字空间。也包括 OCR 读不动时（点线目录、表格、竖排、模糊数字）改成本地高清渲图＋自己看图录入的办法，以及录入时的用字规矩和 ProofreadPage 排版约定。触发词：OCR 写回、ocr.wmcloud.org、wmcloud OCR、Wikisource 逐页识别、Page 名字空间批量建页、目录/索引格式化。
+description: "给 Wikisource 上一部已有扫描件的书逐页做 OCR 并写回。用 ocr.wmcloud.org（Wikimedia 官方 OCR，可选 Google／Tesseract／Transkribus 引擎）识别 Commons 上的 PDF/DjVu，结果存盘，再用 pywikibot 以用户帐号写进 Page: 名字空间。也包括 OCR 读不动时（点线目录、表格、竖排、模糊数字）改成本地高清渲图＋自己看图录入的办法，以及录入时的用字规矩和 ProofreadPage 排版约定。触发词：OCR 写回、ocr.wmcloud.org、wmcloud OCR、Wikisource 逐页识别、Page 名字空间批量建页、目录/索引格式化。"
 ---
 
 # Wikisource 扫描书的 OCR 与写回
