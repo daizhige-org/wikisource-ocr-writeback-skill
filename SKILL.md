@@ -24,6 +24,18 @@ description: 给 Wikisource 上一部已有扫描件的书逐页做 OCR 并写�
 ## 动手之前：几条不能破的规矩
 
 - **必须有能用的 pywikibot 登录配置。** 去找 `user-config.py`（通常在用户别的项目目录里），然后用 `PYWIKIBOT_DIR=<那个目录>` 指过去。**不要去打开 `user-password.py` 看内容**——pywikibot 自己会读，你不需要看见密码。确认配置里有 `usernames['wikisource']['zh'] = '<用户名>'` 这样的条目就行。
+- **开跑前先验一次权限，别跑到一半才发现建不了页。** 登录后查 `site.userinfo['rights']`，`edit`、`createpage`、`pagequality` 三项都要在：
+
+  ```bash
+  PYWIKIBOT_DIR=<配置目录> python3 -c "
+  import pywikibot
+  s = pywikibot.Site('zh', 'wikisource'); s.login()
+  r = set(s.userinfo['rights'])
+  print(s.user(), {x: x in r for x in ['edit', 'createpage', 'pagequality']})
+  "
+  ```
+
+  少了 `createpage` 就是这个 BotPassword 没勾「创建、编辑和移动页面（createeditmovepage）」——**改已有页面会正常，一到建新页就失败**，而一部书的 `Page:` 页绝大多数是新建的。停下来让用户回 Special:BotPasswords 给同一个 BotPassword 补勾（补勾不换密码），别自己想办法绕。少了 `edit` 则是没勾「编辑存在的页面（editpage）」，`pagequality` 也来自这一条。
 - **找不到配置就停下来问用户**，不要自己去申请或编造 bot 用户密码。（怎么申请 BotPassword、要勾哪些权限、密码文件什么格式，README 里有，可以直接指给用户看。）
 - **默认不覆盖已经有正文的页面。** 别人写过的、或者用户自己写过的，跳过。除非用户明确说要覆盖。
 - 每次编辑之间等 2–3 秒，别让服务器过载。

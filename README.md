@@ -68,17 +68,32 @@ OCR 用的是 [ocr.wmcloud.org](https://ocr.wmcloud.org)（Wikimedia 官方服�
 
 ### 二、勾哪些权限
 
-按 Special:BotPasswords 上的中文标签：
+按 Special:BotPasswords 上的中文标签，**下面打「必须」的两条都要勾，缺一不可**：
 
-| 权限 | 要不要 | 为什么 |
+| 权限（括号内是内部名） | 要不要 | 为什么 |
 |---|---|---|
-| 基本权限 | 自动包含 | 读页面、拿 token |
-| **编辑存在的页面** | **必须** | 改已有的 `Page:` 页 |
-| **创建、编辑和移动页面** | **必须** | `Page:` 页绝大多数是新建的，少这条会在建页时失败 |
-| 大量操作（机器人）访问权限 | 不用 | 只有帐号真有 bot 标记时才有意义 |
+| 基本权限 `(basic)` | 自动包含 | 读页面、拿 token |
+| **编辑存在的页面 `(editpage)`** | **必须** | 改已有的 `Page:` 页。ProofreadPage 的「设校对等级」（`pagequality`）也挂在这一条下面，不必另找 |
+| **创建、编辑和移动页面 `(createeditmovepage)`** | **必须** | **新建页面只由这一条授予。** 一部书的 `Page:` 页绝大多数是新建的，漏了它，改已有页面正常、一到建页就失败 |
+| 大量操作（机器人）访问权限 `(highvolume)` | 不用 | 只有帐号真有 bot 标记时才有意义 |
 | 编辑受保护的页面 / 上传新文件 / 删除 | **别勾** | 这份 skill 完全用不到 |
 
-**只勾中间那两条**就够。权限给少了顶多某一步报错，给多了是白白扩大泄露后的破坏面。
+这两条互不覆盖：名字里都有「编辑」，但 `editpage` 只管改已存在的页面，`createeditmovepage` 只管新建（和移动）。**只勾其中一条，作业跑到一半必然出错**——只勾前者是建页时报权限不足，只勾后者是改已有页面时报权限不足。
+
+给多了则是白白扩大泄露后的破坏面，所以除这两条外别的都不要勾。
+
+配好之后，开跑前先自检一遍实际拿到的权限：
+
+```bash
+PYWIKIBOT_DIR=<配置目录> python3 -c "
+import pywikibot
+s = pywikibot.Site('zh', 'wikisource'); s.login()
+r = set(s.userinfo['rights'])
+print(s.user(), {x: x in r for x in ['edit', 'createpage', 'pagequality']})
+"
+```
+
+三项都是 `True` 才算齐；`createpage` 是 `False` 就是漏勾了「创建、编辑和移动页面」，回 Special:BotPasswords 给同一个 BotPassword 补勾即可（补勾不会换密码）。
 
 ### 三、两个配置文件
 
